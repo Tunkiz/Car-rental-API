@@ -1,0 +1,49 @@
+A single user API
+
+Entities
+- Categories(Brand name)
+ - Name(BWM, Benz, Honda, VW, Hundai, Toyota)
+ - Country Name
+	- CRUD
+
+- Models
+ - Id
+ - Name - (Convertibles, SUVs, Coupes, Sedans, Limousines, Microcars, Hatchbacks)
+
+	- CRUD
+- Clients
+ - Name
+ - Id
+ - Address
+ - Booked Cars[]
+ - Reserved Cars[]
+	- CRUD
+	- Reserve a car for client(Add using Client ID and Car ID)
+	- Edit and remove a reservation(Edit and removing ID)
+- Cars
+ - Name
+ - Id
+ - Category
+ - Model
+ - Client
+ - status - default is available
+
+	- CRUD *
+	- Book a for a client(Car ID and Client ID)
+	- List available cars *
+	- List Reserverd cars *
+	- List booked cars *
+
+	- List available cars by car model
+	- List Reserverd cars by car model
+	- List booked cars by car model
+
+Entities Relations
+Client has OneToMany relationship with cars - Can book or reserve more than one car
+Car has OneToOne relationship with model - Car belong to one model
+Car has OneToOne relationship with category - Car belong to one category
+
+
+
+
+
