@@ -1,13 +1,13 @@
 package com.carrental.CarrentalAPI.services;
 
+import com.carrental.CarrentalAPI.models.Car;
 import com.carrental.CarrentalAPI.models.Category;
-import com.carrental.CarrentalAPI.models.dto.CategoryDto;
 import com.carrental.CarrentalAPI.models.exception.CategoryNotFoundException;
 import com.carrental.CarrentalAPI.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,6 +16,7 @@ import java.util.stream.StreamSupport;
 @Service
 public class CategoryServices {
     private final CategoryRepository categoryRepository;
+
     @Autowired
     public CategoryServices(CategoryRepository categoryRepository) {
         this.categoryRepository = categoryRepository;
@@ -41,4 +42,19 @@ public class CategoryServices {
         categoryRepository.delete(category);
         return category;
     }
+//    @Transactional
+//    public Category addCarToCategory(Long categoryId, Long carId){
+//        Category category = getCategory(categoryId);
+//        Car car = carServices.getCar(carId);
+//        category.addCarToCategory(car);
+//        car.setCategory(category);
+//        return category;
+//    }
+//    @Transactional
+//    public Category removeCarFromCategory(Long categoryId, Long carId){
+//        Category category = getCategory(categoryId);
+//        Car car = carServices.getCar(carId);
+//        category.removeCarFromCategory(car);
+//        return category;
+//    }
 }

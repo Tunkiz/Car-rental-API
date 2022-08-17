@@ -1,12 +1,14 @@
 package com.carrental.CarrentalAPI.services;
 
-import com.carrental.CarrentalAPI.models.Model;
+import com.carrental.CarrentalAPI.models.Car;
+import com.carrental.CarrentalAPI.models.CarModel;
 import com.carrental.CarrentalAPI.models.exception.ModelNotFoundException;
 import com.carrental.CarrentalAPI.repository.CarModelRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
@@ -14,29 +16,45 @@ import java.util.stream.StreamSupport;
 @Service
 public class ModelServices {
     private final CarModelRepository carModelRepository;
+
     @Autowired
     public ModelServices(CarModelRepository carModelRepository) {
         this.carModelRepository = carModelRepository;
     }
-    public Model addModel(Model model){
-        return carModelRepository.save(model);
+    public CarModel addModel(CarModel carModel){
+        return carModelRepository.save(carModel);
     }
-    public List<Model> getModels(){
+    public List<CarModel> getModels(){
         return StreamSupport.stream(carModelRepository.findAll().spliterator(), false).collect(Collectors.toList());
     }
-    public Model getModel(Long id){
-        Model model = carModelRepository.findById(id).orElseThrow(() -> new ModelNotFoundException(id));
-        return model;
+    public CarModel getModel(Long id){
+        CarModel carModel = carModelRepository.findById(id).orElseThrow(() -> new ModelNotFoundException(id));
+        return carModel;
     }
     @Transactional
-    public Model updateModel(Long id, Model model){
-        Model modelToBeUpdated = getModel(id);
-        modelToBeUpdated.setName(model.getName());
-        return modelToBeUpdated;
+    public CarModel updateModel(Long id, CarModel carModel){
+        CarModel carModelToBeUpdated = getModel(id);
+        carModelToBeUpdated.setName(carModel.getName());
+        return carModelToBeUpdated;
     }
-    public Model delete(Long id){
-        Model model = getModel(id);
-        carModelRepository.delete(model);
-        return model;
+    public CarModel delete(Long id){
+        CarModel carModel = getModel(id);
+        carModelRepository.delete(carModel);
+        return carModel;
     }
+//    @Transactional
+//    public CarModel addCarToModel(Long modelId, Long carId){
+//        CarModel carModel = getModel(modelId);
+//        Car car = carServices.getCar(carId);
+//        carModel.addCarToModel(car);
+//        car.setCarModel(carModel);
+//        return carModel;
+//    }
+//    @Transactional
+//    public CarModel removeCarFrom(Long modelId, Long carId){
+//        CarModel carModel = getModel(modelId);
+//        Car car = carServices.getCar(carId);
+//        carModel.removeCarFromModel(car);
+//        return carModel;
+//    }
 }

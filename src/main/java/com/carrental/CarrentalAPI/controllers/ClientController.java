@@ -1,7 +1,12 @@
 package com.carrental.CarrentalAPI.controllers;
 
+import com.carrental.CarrentalAPI.models.BookedCars;
 import com.carrental.CarrentalAPI.models.Client;
+import com.carrental.CarrentalAPI.models.ReservedCars;
+import com.carrental.CarrentalAPI.models.dto.BookedCarsDto;
 import com.carrental.CarrentalAPI.models.dto.ClientDto;
+import com.carrental.CarrentalAPI.models.dto.ReservedCarsDto;
+import com.carrental.CarrentalAPI.models.exception.CarNotFoundException;
 import com.carrental.CarrentalAPI.services.ClientServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -48,7 +53,7 @@ public class ClientController {
         Client client = clientServices.deleteClient(id);
         return new ResponseEntity<>(ClientDto.fromS(client), HttpStatus.OK);
     }
-    @PostMapping(value = "{clientId}/cars/{carId}/add/{from}/{to}")
+    @PostMapping(value = "{clientId}/cars/{carId}/reserve/{from}/{to}")
     public ResponseEntity<ClientDto> reserve(@PathVariable final Long carId, @PathVariable final Long clientId, @PathVariable final Date from, @PathVariable final Date to){
         Client client = clientServices.reserveCarForClient(carId, clientId, from, to);
         return new ResponseEntity<>(ClientDto.fromS(client), HttpStatus.OK);
@@ -58,15 +63,27 @@ public class ClientController {
         Client client = clientServices.bookCarForClient(carId, clientId, from, to);
         return new ResponseEntity<>(ClientDto.fromS(client), HttpStatus.OK);
     }
-    @DeleteMapping(value = "{clientId}/cars/{carId}/remove")
+    @DeleteMapping(value = "{clientId}/cars/{carId}/reserved")
     public ResponseEntity<ClientDto> removeReserved(@PathVariable final Long carId, @PathVariable final Long clientId){
         Client client = clientServices.removeCarFromClient(carId, clientId);
         return new ResponseEntity<>(ClientDto.fromS(client), HttpStatus.OK);
     }
-    @DeleteMapping(value = "{clientId}/cars/{carId}/removeB")
+    @DeleteMapping(value = "{clientId}/cars/{carId}/booked")
     public ResponseEntity<ClientDto> removeBooked(@PathVariable final Long carId, @PathVariable final Long clientId){
         Client client = clientServices.removeBookedCarFromClient(carId, clientId);
         return new ResponseEntity<>(ClientDto.fromS(client), HttpStatus.OK);
     }
 
+    @GetMapping(value = "/reserved/{client_id}")
+    public ResponseEntity<List<ReservedCarsDto>> clientReservedCars(@PathVariable final Long client_id){
+        List<ReservedCars> reservedCars = clientServices.getReservedCars(client_id);
+        List<ReservedCarsDto> reservedCarsDtos = reservedCars.stream().map(ReservedCarsDto::from).collect(Collectors.toList());
+        return  new ResponseEntity<>(reservedCarsDtos, HttpStatus.OK);
+    }
+    @GetMapping(value = "booked/{client_id}")
+    public ResponseEntity<List<BookedCarsDto>> clientBookedCars(@PathVariable final Long client_id){
+        List<BookedCars> bookedCars = clientServices.getBookedCars(client_id);
+        List<BookedCarsDto> bookedCarsDtos = bookedCars.stream().map(BookedCarsDto::from).collect(Collectors.toList());
+        return  new ResponseEntity<>(bookedCarsDtos, HttpStatus.OK);
+    }
 }

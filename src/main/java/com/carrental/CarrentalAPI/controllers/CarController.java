@@ -5,11 +5,13 @@ import com.carrental.CarrentalAPI.models.dto.CarDto;
 import com.carrental.CarrentalAPI.services.CarServices;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -21,9 +23,9 @@ public class CarController {
     public CarController(CarServices carServices) {
         this.carServices = carServices;
     }
-    @PostMapping
-    public ResponseEntity<CarDto> addCar(@RequestBody final CarDto carDto){
-        Car car = carServices.addCar(Car.from(carDto));
+    @PostMapping(value = "{modelId}/{categoryId}")
+    public ResponseEntity<CarDto> addCar(@RequestBody final CarDto carDto, @PathVariable final Long modelId, @PathVariable final Long categoryId){
+        Car car = carServices.addCar(Car.from(carDto), modelId, categoryId);
         return new ResponseEntity<>(CarDto.from(car), HttpStatus.OK);
     }
     @GetMapping
@@ -55,6 +57,14 @@ public class CarController {
     }
     @GetMapping(value = "model/{name}")
     public ResponseEntity<List<CarDto>> listByModel(@PathVariable final  String name){
-
+        List<Car> cars = carServices.listByModel(name);
+        List<CarDto> carDtos = cars.stream().map(CarDto::from).collect(Collectors.toList());
+        return new ResponseEntity<>(carDtos, HttpStatus.OK);
+    }
+    @GetMapping(value = "category/{name}")
+    public ResponseEntity<List<CarDto>> listByCategory(@PathVariable final  String name){
+        List<Car> cars = carServices.listByCategory(name);
+        List<CarDto> carDtos = cars.stream().map(CarDto::from).collect(Collectors.toList());
+        return new ResponseEntity<>(carDtos, HttpStatus.OK);
     }
 }

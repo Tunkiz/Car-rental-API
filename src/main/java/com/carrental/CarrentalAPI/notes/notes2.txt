@@ -1,0 +1,34 @@
+Client(Id, Name, Address, Contact)
+CARS(Id, Name, Price/H, ModelId, ClientId, CategoryId, Status)
+BOOKING/RESERVED(ID, CarName, From(start Date),To(End Start), ClientId)
+CLIENT, CARS, BOOKING/RESERVED
+Client can Reserve/Book many Cars(OneToMany)
+Many Cars can be Reserved/Booked by a Client(ManyToOne)
+Client (Reserve and Book Cars)
+        Add/Reserve - Reserve cars from Cars using ClientId
+                            ReservedCars
+                                add    - cars details and client details with CarId P and ClientId F
+                           Cars
+                                update - ClientId in a car in Cars
+                                update - car status to Reserved in Cars
+                    - Remove reserved cars from Client using CarId P and ClientId F
+                            RemoveReservedCars
+                                remove - car with CarId and ClientId in ReservedCars
+                            Cars
+                                update - ClientId in Cars to null
+                                update - car status to Available in Cars
+
+CARS(Id, Name, Price/H, ModelId, ClientId, CategoryId, Status)
+CARMODEL(Id, Name)
+CATEGORIES(ID, NAME)
+CARS, CARMODELS/CATEGORIES
+A CarModel/Category has many Cars.(OneToMany)
+Many Cars belong to a CarModel(ManyToOne)
+        Add/Remove - Add Cars to CarModel.
+                            CarModel
+                                Update - ModelId F in Cars using CarId P
+
+
+
+
+

@@ -13,7 +13,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Controller
+@RestController
 @RequestMapping("/category")
 public class CategoryController {
     private final CategoryServices categoryServices;
@@ -47,4 +47,14 @@ public class CategoryController {
         Category category = categoryServices.delete(id);
         return new ResponseEntity<>(CategoryDto.from(category), HttpStatus.OK);
     }
+//    @PostMapping(value = "{categoryId}/car/{carId}/add")
+//    public ResponseEntity<CategoryDto> addCarToCategory(@PathVariable final Long categoryId, @PathVariable final Long carId){
+//        Category category = categoryServices.addCarToCategory(categoryId, carId);
+//        return new ResponseEntity<>(CategoryDto.from(category), HttpStatus.OK);
+//    }
+//    @DeleteMapping(value = "{categoryId}/cars/{carId}/remove")
+//    public ResponseEntity<CategoryDto> removeCarFromCategory(@PathVariable final Long categoryId, @PathVariable final Long carId){
+//        Category category = categoryServices.removeCarFromCategory(categoryId, carId);
+//        return new ResponseEntity<>(CategoryDto.from(category), HttpStatus.OK);
+//    }
 }

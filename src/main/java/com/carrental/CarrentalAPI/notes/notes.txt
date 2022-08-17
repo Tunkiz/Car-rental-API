@@ -6,9 +6,9 @@ Entities
  - Country Name
 	- CRUD
 
-- Models
+- Categories
  - Id
- - Name - (Convertibles, SUVs, Coupes, Sedans, Limousines, Microcars, Hatchbacks)
+ - Na - (Convertibles, SUVs, Coupes, Sedans, Limousines, Microcars, Hatchbacks)
 
 	- CRUD
 - Clients
@@ -34,16 +34,23 @@ Entities
 	- List Reserverd cars *
 	- List booked cars *
 
-	- List available cars by car model
-	- List Reserverd cars by car model
-	- List booked cars by car model
+	- List available cars by car carModel
+	- List Reserverd cars by car carModel
+	- List booked cars by car carModel
 
 Entities Relations
 Client has OneToMany relationship with cars - Can book or reserve more than one car
-Car has OneToOne relationship with model - Car belong to one model
+Car has OneToOne relationship with carModel - Car belong to one carModel
 Car has OneToOne relationship with category - Car belong to one category
 
 
 
 
+
+
+SELECT cars.name, cars.status, cars.price
+FROM cars
+JOIN car_model
+WHERE cars.model_id = car_model.id
+AND car_model.name =
 

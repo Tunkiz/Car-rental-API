@@ -13,26 +13,27 @@ import java.util.List;
 @Table(name = "clients")
 public class Client {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String address;
     @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "client_id")
-
-    List<Car> carList = new ArrayList<>();
-    public void reserveCar(Car car){
+    //@JoinColumn(name = "client_id")
+    List<ReservedCars> carList = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    List<BookedCars> bookedCars = new ArrayList<>();
+    public void reserveCar(ReservedCars car){
         carList.add(car);
     }
-    public void removeReservedCar(Car car){
+    public void removeReservedCar(ReservedCars car){
         carList.remove(car);
     }
     //List<Car> bookedCars = new ArrayList<>();
-    public void bookCar(Car car){
-        carList.add(car);
+    public void bookCar(BookedCars car){
+        bookedCars.add(car);
     }
-    public void removeBookedCar(Car car){
-        carList.remove(car);
+    public void removeBookedCar(BookedCars car){
+        bookedCars.remove(car);
     }
     public static Client from(ClientDto clientDto){
         Client client = new Client();
